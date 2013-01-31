@@ -43,17 +43,16 @@ public class Merger {
 		try{
 			
 			
-			// path of desktop
-			pathToDesktop = System.getProperty("user.home");
-			NewDoc = new Document();
-			// outputfile
+		// path of desktop
+		pathToDesktop = System.getProperty("user.home");
+		NewDoc = new Document();
+		// outputfile
 	        PdfCopy copy = new PdfCopy(NewDoc, new FileOutputStream(pathToDesktop + "/" + FileName  + ".pdf"));
 	        NewDoc.open();
 	        int number_of_pages;
 	        for (int i = 0; i < pdfs.size(); i++) {
 	                ReadInputPDF = new PdfReader(pdfs.get(i));
-	                number_of_pages = ReadInputPDF.getNumberOfPages();
-	                
+	                number_of_pages = ReadInputPDF.getNumberOfPages();       
 	                for (int page = 0; page < number_of_pages; ) {
 	                        copy.addPage(copy.getImportedPage(ReadInputPDF, ++page));
 	                      }
