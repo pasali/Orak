@@ -1,39 +1,45 @@
-import java.awt.EventQueue;
+package com.merge;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.event.ActionListener;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.DefaultListModel;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.itextpdf.text.DocumentException;
 
+public class MergerGui {
 
-public class merger_gui {
-
+	
 	private JFrame frmLorduV;
-	JTextField textField_1;
-	static String fileout;
+	private JTextField textField_1;
+	private  String fileout;
+	private DefaultListModel model = new DefaultListModel();
+	private JList list = new JList(model);
+	private Merger merge = new Merger();
+	
 	
 	/**
 	 * Launch the application.
 	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					merger_gui window = new merger_gui();
+					MergerGui window = new MergerGui();
 					window.frmLorduV.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +51,7 @@ public class merger_gui {
 	/**
 	 * Create the application.
 	 */
-	public merger_gui() {
+	public MergerGui() {
 		initialize();
 	}
 
@@ -53,13 +59,12 @@ public class merger_gui {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		frmLorduV = new JFrame();
 		frmLorduV.setResizable(false);
 		frmLorduV.setTitle("Lordu v0.1");
 		frmLorduV.setBounds(100, 100, 322, 261);
 		frmLorduV.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		final DefaultListModel model = new DefaultListModel();
-		final JList list = new JList(model);
 		
 		JButton btnNewButton = new JButton("Kaldır");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -85,9 +90,7 @@ public class merger_gui {
 				File file  = fc.getSelectedFile();
 				int index = list.getModel().getSize();
 				model.add(index,file.getName());
-				merger dizi = new merger();
-				dizi.pdfs.add(file.getAbsolutePath());
-				
+				merge.addPDFs(file.getAbsolutePath());				
 
 			}
 		});
@@ -102,12 +105,10 @@ public class merger_gui {
 				}
 				else
 				{
-					merger birlestir = new merger();
-					
-					if(birlestir.pdfs.size() >= 2)
+					if(merge.NumberOfPDFs() >= 2)
 					{
 							try {
-								birlestir.main();
+								merge.mergePdfs(fileout);
 							} catch (DocumentException e) {
 								e.printStackTrace();
 							} catch (IOException e) {
@@ -166,4 +167,7 @@ public class merger_gui {
 		);
 		frmLorduV.getContentPane().setLayout(groupLayout);
 	}
+	
+	
+	
 }
